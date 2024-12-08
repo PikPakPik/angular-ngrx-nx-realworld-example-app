@@ -1,8 +1,9 @@
-# Angular NgRx NX realworld example app
+# Angular NgRx NX Realworld Example App
 
 <img src="logo.png" alt="RealWorld Example App" width="200"/>
 
 ### Modern Angular features:
+
 - New Control Flow
 - Deferred Loading
 - Zoneless
@@ -11,162 +12,64 @@
 - DI using the inject function
 - Functional resolvers and guards
 
-> ### Angular, ngrx/platform, nrwl/nx codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+A simple, scalable, and powerful architecture for building production ready React applications.
 
-### [Demo](https://angular-ngrx-nx-realworld-example-app-lyart.vercel.app)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
+## Introduction
 
-This codebase was created to demonstrate a fully fledged fullstack application built with Angular, ngrx/platform, nrwl/nx including CRUD operations, authentication, routing, pagination, and more.
+This codebase was created to demonstrate a fully fledged fullstack application built with [Angular](https://angular.dev/), [ngrx/signals](https://ngrx.io/guide/signals), [nrwl/nx](https://nx.dev/) including CRUD operations, authentication, routing, pagination, and more. It is an implementation of the [RealWorld apps](https://github.com/gothinkster/realworld) project. The purpose of the `RealWorld apps` project is to demonostrate how you can build the same "realworld" app using different technologies in the front-end and on the back-end.
 
-We've gone to great lengths to adhere to the Angular community styleguides & best practices.
+This specific implementation was created in 2017 and it is constantly migrated to the latest versions of Angular and it utilizes most of the features of the Modern Angular era. You can help us to maintain this project in various ways. You can find some of them in the [how to contribute]() guide.
 
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
-## Functionality overview
+Feel free to explore the sample app codebase to get the most value out of the repo.
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication.
+## What makes a React application "bulletproof"?
 
-**General functionality:**
+This repo doesn't aim to be a silver bullet for all React applications as there are many different use cases, but it tries to provide a solid foundation for building applications based on the following principles:
 
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU\* users (sign up & settings page - no deleting required)
-- CRUD Articles
-- CR\*D Comments on articles (no updating required)
-- GET and display paginated lists of articles
-- Favorite articles
-- Follow other users
+- Easy to get started with
+- Simple to understand and maintain
+- Uses the right tools for the job
+- Clean boundaries between different parts of the application
+- Everyone on the team is on the same page when it comes to how things are done
+- Secure
+- Performant
+- Scalable in terms of codebase and team size
+- Issues detectable as early as possible
 
-**The general page breakdown looks like this:**
+#### Disclaimer:
 
-- Home page (URL: /#/ )
-  - List of tags
-  - List of articles pulled from either Feed, Global, or by Tag
-  - Pagination for list of articles
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-  - Uses JWT (store the token in localStorage)
-  - Authentication can be easily switched to session/cookie based
-- Settings page (URL: /#/settings )
-- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
-- Article page (URL: /#/article/article-slug-here )
-  - Delete article button (only shown to article's author)
-  - Render markdown from server client side
-  - Comments section at bottom of page
-  - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
-  - Show basic user info
-  - List of articles populated from author's created articles or author's favorited articles
+This is not supposed to be a template, boilerplate or a framework. It is an opinionated guide that shows how to do some things in a certain way. You are not forced to do everything exactly as it is shown here, decide what works best for you and your team and stay consistent with your style.
 
-## Commands
+To get most out of it, do not get limited by the technologies used in this sample app, but rather focus on the principles and the concepts that are being presented here. The tools and libraries used here are just a suggestion, you can always replace them with something that fits your needs better. Sometimes, your project might require a slightly different approach, and that's totally fine.
 
-### Run the application
+## Table Of Contents:
 
-`npm run start`
+- [💻 Application Overview](docs/application-overview.md)
+- [⚙️ Project Standards](docs/project-standards.md)
+- [🗄️ Project Structure](docs/project-structure.md)
+- [🧱 Components And Styling](docs/components-and-styling.md)
+- [📡 API Layer](docs/api-layer.md)
+- [🗃️ State Management](docs/state-management.md)
+- [🧪 Testing](docs/testing.md)
+- [⚠️ Error Handling](docs/error-handling.md)
+- [🔐 Security](docs/security.md)
+- [🚄 Performance](docs/performance.md)
+- [🌐 Deployment](docs/deployment.md)
+- [📚 Additional Resources](docs/additional-resources.md)
 
-### Unit tests
+## Contributing
 
-Run all the tests: `nx run-many -t test`
+Contributions are always welcome! If you have any ideas, suggestions, fixes, feel free to contribute. You can do that by going through the following steps:
 
-### Lint
+1. Clone this repo
+2. Create a branch: `git checkout -b your-feature`
+3. Execute the `npm i` script.
+4. Make some changes
+5. Test your changes
+6. Push your branch and open a Pull Request
 
-`nx run-many -t lint`
+## License
 
-### Architecture
-
-#### Folders/Libs structure
-
-For this project I created a monorepo. There is one app for the moment (conduit) which consumes the libraries under the libs folder.
-
-The folder structure is:
-
-```
-├── libs
-│   ├── articles
-│   │   ├── data-access
-│   │   ├── feature-article-edit
-│   │   ├── feature-article
-│   │   ├── feature-articles-list
-│   ├── auth
-│   │   ├── data-access
-│   │   ├── feature-auth
-│   ├── core
-│   │   ├── api-types
-│   │   ├── error-handler
-│   │   ├── http-client
-│   │   ├── forms
-│   ├── profile
-│   │   ├── data-access
-│   │   ├── feature-profile
-│   ├── ui
-│   │   ├── components
-```
-
-I used two classifiers to name my libraries. The first classifier is the `scope` and the second the `type`. The main reason is that I want every developer when he looks a library to understand where this library can be used and which kind of services/components/etc contains.
-
-The `scope` is the section (domain) of the app the library can be used. It gives a clear indication that a feature belongs to a specific domain. For example the libraries under `users` scope, are used in the users and favourite users pages. The ibraries under the `core` scope can be reused between all the sections of the app. **_The `core` scope will be rename soon to `shared`_**.
-
-The `type` indicates the purpose of a library. I have used a number of different types (feature, data-access, ui, api-types) The `feature-...` type contains smart components. These are components which enable the communication with the data-sources (most likely they inject api services). The `data-access` type contains code for interacting with the server. The `ui` type contains dumb (presentational) components. These components are reusable in the scope of this library
-
-#### Standalone components
-
-I have used only standalone components. You won't see any modules in the app.
-
-#### Lazy loaded components
-
-As you can see from the route configuration, the two main pages in the app are loaded lazily. This will make the initial loading time of the app faster.
-
-```ts
- {
-  path: '',
-  redirectTo: 'home',
-  pathMatch: 'full',
-},
-{
-  path: 'home',
-  loadChildren: () => import('@realworld/home/src/lib/home.routes').then((home) => home.HOME_ROUTES),
-},
-{
-  path: 'login',
-  loadComponent: () => import('@realworld/auth/feature-auth').then((m) => m.LoginComponent),
-},
-{
-  path: 'register',
-  loadComponent: () => import('@realworld/auth/feature-auth').then((m) => m.RegisterComponent),
-},
-{
-  path: 'article',
-  loadChildren: () => import('@realworld/articles/article').then((m) => m.ARTICLE_ROUTES),
-},
-{
-  path: 'settings',
-  loadComponent: () =>
-    import('@realworld/settings/feature-settings').then((settings) => settings.SettingsComponent),
-},
-{
-  path: 'editor',
-  loadChildren: () => import('@realworld/articles/article-edit').then((article) => article.ARTICLE_EDIT_ROUTES),
-  canActivate: [authGuard],
-},
-{
-  path: 'profile',
-  loadChildren: () => import('@realworld/profile/feature-profile').then((profile) => profile.PROFILE_ROUTES),
-},
-```
-
-#### State management
-
-**TBD**
-
-#### The smart-dumb components design pattern for the components:
-
-There is a clear distinction in the codebase between the smart and dumb components. The main reason behind this decision is that I want most of my components to be reusable and easier to be tested. That means that they should not have dependencies and they just consume the data they get from the smart component. Also it makes clearer a compoenent's responsibility.
-
-#### Avoid using external dependencies
-
-As you can see in the package.json, we didn't include external libraries, like `angular-material`, libs for the ui components, state management,etc. The reason is that it might be tempting to use a library like this in the short term to develop something fast, but in the long term they can introduce many problems:
-
-- opinionated styles
-- make the migration to newer versions of Angular more difficult
-- not full control on them
-
-#### Testing
-
-**TBD**
+[MIT](/LICENSE)
