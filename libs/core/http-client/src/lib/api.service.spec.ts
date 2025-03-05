@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ApiService } from './api.service';
 import { API_URL } from './api-url.token';
@@ -7,8 +7,7 @@ import { API_URL } from './api-url.token';
 describe('ApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ApiService, { provide: API_URL, useValue: 'api_url' }],
+      providers: [ApiService, { provide: API_URL, useValue: 'api_url' }, provideHttpClientTesting()],
     });
   });
 

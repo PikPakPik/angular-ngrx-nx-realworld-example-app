@@ -1,9 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { API_URL } from '@realworld/core/http-client';
+import { RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -11,8 +14,11 @@ describe('AppComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent, FooterComponent, NavbarComponent],
+      imports: [AppComponent, FooterComponent, NavbarComponent, RouterModule.forRoot([])],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: API_URL, useValue: 'https://api.example.com' },
+      ],
     }).compileComponents();
   }));
 
