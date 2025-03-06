@@ -16,6 +16,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppComponent, FooterComponent, NavbarComponent, RouterModule.forRoot([])],
       providers: [
+        provideHttpClientTesting(),
         provideHttpClient(withInterceptorsFromDi()),
         { provide: API_URL, useValue: 'https://api.example.com' },
       ],

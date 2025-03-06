@@ -1,13 +1,20 @@
-import { ApiService } from '@realworld/core/http-client';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ApiService, API_URL } from '@realworld/core/http-client';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ArticlesService } from './articles.service';
 
 describe('ArticlesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ArticlesService, ApiService],
+      imports: [],
+      providers: [
+        ArticlesService,
+        ApiService,
+        provideHttpClientTesting(),
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: API_URL, useValue: 'https://api.example.com' },
+      ],
     });
   });
 

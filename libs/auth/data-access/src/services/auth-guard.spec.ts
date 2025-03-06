@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { authGuard } from './auth-guard';
-import { cold } from 'jasmine-marbles';
-import { LocalStorageJwtService } from './local-storage-jwt.service';
-import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { LocalStorageJwtService } from './local-storage-jwt.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { API_URL } from '@realworld/core/http-client/src';
+import { of } from 'rxjs';
+import { AuthStore } from '../auth.store';
 
 @Component({
   selector: 'cdt-test-comp',
@@ -16,18 +18,29 @@ class TestComponent {}
 describe('authGuard', () => {
   let storage: LocalStorageJwtService;
   let router: Router;
+  let mockAuthStore: { loggedIn: jest.Mock };
 
   beforeEach(() => {
+    mockAuthStore = {
+      loggedIn: jest.fn().mockReturnValue(true),
+    };
+
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'login',
             component: TestComponent,
           },
         ]),
       ],
-      providers: [{ provide: LocalStorageJwtService, useValue: { getItem: () => of('token') } }],
+      providers: [
+        { provide: LocalStorageJwtService, useValue: { getItem: () => of('token') } },
+        { provide: API_URL, useValue: 'https://api.example.com' },
+        { provide: AuthStore, useValue: mockAuthStore },
+        provideHttpClientTesting(),
+        provideHttpClient(withInterceptorsFromDi()),
+      ],
     });
 
     storage = TestBed.inject(LocalStorageJwtService);
@@ -37,14 +50,15 @@ describe('authGuard', () => {
   it('should return true if the user is logged in', () => {
     const result = TestBed.runInInjectionContext(() => authGuard());
 
-    expect(result).toBeObservable(cold('(a|)', { a: true }));
+    expect(result).toBe(true);
   });
 
   it('should return login urlTree if the user is not logged in', () => {
-    jest.spyOn(storage, 'getItem').mockImplementationOnce(() => null);
+    mockAuthStore.loggedIn.mockReturnValueOnce(false);
 
     const result = TestBed.runInInjectionContext(() => authGuard());
+    const expectedUrlTree = router.parseUrl('/login');
 
-    expect(result).toBeObservable(cold('(a|)', { a: router.parseUrl('/login') }));
+    expect(result).toEqual(expectedUrlTree);
   });
 });

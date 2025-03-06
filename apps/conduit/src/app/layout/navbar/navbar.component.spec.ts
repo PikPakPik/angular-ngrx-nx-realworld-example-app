@@ -9,14 +9,23 @@ describe('NavbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [NavbarComponent],
+      imports: [RouterTestingModule, NavbarComponent],
+      declarations: [],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('isLoggedIn', true);
+    fixture.componentRef.setInput('user', {
+      username: 'test',
+      email: 'test@test.com',
+      token: 'test',
+      bio: 'test',
+      image: 'test',
+    });
     fixture.detectChanges();
   });
 

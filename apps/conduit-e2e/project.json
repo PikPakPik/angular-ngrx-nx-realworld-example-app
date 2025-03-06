@@ -7,7 +7,6 @@
   "targets": {
     "e2e": {
       "options": {
-        "tsConfig": "apps/conduit-e2e/tsconfig.e2e.json",
         "config-file": "./cypress.config.ts"
       }
     },
